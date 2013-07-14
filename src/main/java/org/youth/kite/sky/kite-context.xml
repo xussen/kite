@@ -1,0 +1,9 @@
+<context>
+	<kite id="helloWord" class=""></kite>
+	<kites class="org.youth.kite.loader.ClassLoader">
+		<scanPackage>org.youth.kite.test</scanPackage>
+	</kites>
+	<kites class="org.youth.kite.loader.StaticFileLoader">
+		<!--<scanPath>/WEB-INF/kites</scanPath>-->
+	</kites>
+</context>

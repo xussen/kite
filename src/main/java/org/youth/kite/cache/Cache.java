@@ -1,6 +1,6 @@
 package org.youth.kite.cache;
 
-import java.util.List;
+import java.util.Map;
 
 import org.youth.kite.model.Kite;
 
@@ -13,8 +13,8 @@ public interface Cache {
 	
 	Kite getKite(String key);
 	
-	void add(Kite kite);
+	void add(String name, Kite kite);
 
-	void add(List<Kite> kites);
+	void add(Map<String, Kite> kites);
 
 }

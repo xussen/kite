@@ -5,14 +5,15 @@ import org.youth.kite.Response;
 
 /**
  * i feel relax with it
+ * 暂时不考虑带id(key)，保存Kite的干净
  * 
  * @author xusensen
  * @date 2013-7-13
  */
 public final class Kite {
 	
-	final Script script;
-	final View view;
+	private final Script script;
+	private final View view;
 	
 	public Kite(Script script, View view) {
 		this.script = script;

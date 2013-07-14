@@ -1,7 +1,9 @@
 package org.youth.kite.sky;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.youth.kite.model.Kite;
 
@@ -12,16 +14,22 @@ import org.youth.kite.model.Kite;
  */
 public class Configuration {
 	
-	private List<Kite> kites = new ArrayList<Kite>();
+	private Map<String, Kite> kites = new HashMap<String, Kite>();
 	
 	private List<String> scanPackages = new ArrayList<String>();
 	
-	public List<Kite> kites() {
+	public Map<String, Kite> kites() {
 		return kites;
 	}
 
 	public List<String> scanPackages() {
 		return scanPackages;
+	}
+	
+	public void addKites(Map<String, Kite> kites) {
+		for (String key : kites.keySet()) {
+			kites.put(key, kites.get(key));
+		}
 	}
 
 }

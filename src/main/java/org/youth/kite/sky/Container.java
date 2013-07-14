@@ -1,7 +1,6 @@
 package org.youth.kite.sky;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import org.youth.kite.cache.Cache;
 import org.youth.kite.config.ConfigSource;
@@ -27,10 +26,7 @@ public class Container {
 	}
 
 	private static void initKites(Configuration configuration) {
-		final List<Kite> kites = configuration.kites();
-		for(String pkg : configuration.scanPackages()) {
-			kites.addAll(ScanKites.scan(pkg));
-		}
+		final Map<String, Kite> kites = configuration.kites();
 		cache.add(kites);
 	}
 
