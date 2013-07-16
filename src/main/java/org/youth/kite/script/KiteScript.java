@@ -1,4 +1,4 @@
-package org.youth.kite.core;
+package org.youth.kite.script;
 
 import java.util.Map;
 

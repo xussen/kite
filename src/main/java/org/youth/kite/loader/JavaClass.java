@@ -4,9 +4,9 @@ import java.util.Map;
 
 import org.youth.kite.Request;
 import org.youth.kite.Response;
-import org.youth.kite.core.KiteScript;
 import org.youth.kite.model.Model;
 import org.youth.kite.model.Script;
+import org.youth.kite.script.KiteScript;
 
 public class JavaClass implements Script {
 	

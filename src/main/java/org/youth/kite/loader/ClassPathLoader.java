@@ -11,8 +11,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.log4j.Logger;
-import org.youth.kite.core.KiteScript;
 import org.youth.kite.model.Kite;
+import org.youth.kite.script.KiteScript;
 
 public class ClassPathLoader {
 	
@@ -22,7 +22,7 @@ public class ClassPathLoader {
 		final List<Kite> kites = new ArrayList<Kite>();
 		try {
 			for(String cn : filterClazzNames(getClassNamesFromPackage(scanPackage))) {
-				Class clazz = Class.forName(scanPackage+"."+cn);
+				Class clazz = Class.forName(cn);
 				KiteScript kiteScript = (KiteScript)clazz.newInstance();
 				JavaClass script = new JavaClass(kiteScript);
 				Kite kite = new Kite(script, null);
@@ -58,8 +58,9 @@ public class ClassPathLoader {
 
 	public static void main(String[] args) throws IOException {
 		ClassPathLoader classPathLoader = new ClassPathLoader();
-		for(String cn : classPathLoader.getClassNamesFromPackage("org.youth.kite")) {
-			System.out.println(cn);
+		classPathLoader.setScanPackage("org.youth.kite.test.loader.");
+		for(Kite kite : classPathLoader.loadKites()) {
+			System.out.println(kite);
 		}
 	}
 	public ArrayList<String> getClassNamesFromPackage(String packageName) throws IOException{
@@ -79,14 +80,16 @@ public class ClassPathLoader {
 	        // build jar file name, then loop through zipped entries
 	        jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
 	        jarFileName = jarFileName.substring(5,jarFileName.indexOf("!"));
-	        System.out.println(">"+jarFileName);
 	        jf = new JarFile(jarFileName);
 	        jarEntries = jf.entries();
 	        while(jarEntries.hasMoreElements()){
-	            entryName = jarEntries.nextElement().getName();
-	            if(entryName.startsWith(packageName) && entryName.length()>packageName.length()+5){
-	                entryName = entryName.substring(packageName.length(),entryName.lastIndexOf('.'));
-	                names.add(entryName);
+	        	JarEntry jarEntry = jarEntries.nextElement();
+	            entryName = jarEntry.getName();
+	            if(entryName.equals(packageName) || entryName.substring(0,entryName.lastIndexOf('/')+1).equals(packageName)) {
+	            	if(entryName.endsWith(".class")) {
+		                names.add(entryName.replaceAll("/", "."));
+			            System.out.println(entryName.replaceAll("/", "."));
+	            	}
 	            }
 	        }
 
@@ -99,7 +102,7 @@ public class ClassPathLoader {
 	        	if(actual.isFile()) {
 		            entryName = actual.getName();
 		            entryName = entryName.substring(0, entryName.lastIndexOf('.'));
-		            names.add(entryName);
+		            names.add((packageName + entryName).replaceAll("/", "."));
 	        	}
 	        }
 	    }
