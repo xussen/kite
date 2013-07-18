@@ -17,7 +17,9 @@ public class Container {
 	 * @param configuration
 	 */
 	public static void init(ConfigSource configSource) {
+		//parse 
 		Configuration configuration = parse(configSource);
+		//linking
 		initKites(configuration);
 		initInterceptors(configuration);
 	}

@@ -1,6 +1,6 @@
 <context>
-	<kite id="helloWord" class=""></kite>
-	<kites class="org.youth.kite.loader.ClassPathLoader">
+	<kite id="helloWord" class="org.youth.kite.loader.HelloWordKiteScript"></kite>
+	<kites class="org.youth.kite.loader.JavaLoader">
 		<scanPackage>org.youth.kite.test</scanPackage>
 	</kites>
 	<kites class="org.youth.kite.loader.StaticFileLoader">

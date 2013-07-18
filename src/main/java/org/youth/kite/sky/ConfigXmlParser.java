@@ -9,8 +9,12 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.youth.kite.PaseClassNameException;
 import org.youth.kite.config.ConfigSource;
+import org.youth.kite.loader.ClassPathLoader;
+import org.youth.kite.loader.KiteLoader;
 import org.youth.kite.model.Kite;
+import org.youth.kite.util.NewObject;
 
 /**
  * 
@@ -47,13 +51,21 @@ public class ConfigXmlParser {
 		//类路径下装入Kite
 		List<Element> kiteClassesEles = context.elements("kite");
 		for (Element kiteClassEle : kiteClassesEles) {
-			Kite kite = null;//parseKiteEle(kiteClassEle)
+			Kite kite = ClassPathLoader.loadKite(kiteClassEle.attribute("class").getValue());
 			kites.put(kiteClassEle.attributeValue("id"), kite);
 		}
 		//扩展方式载入Kite
 		List<Element> kitesEles = context.elements("kites");
 		for (Element kitesEle : kitesEles) {
-			Map<String, Kite> importKites = null;//parseKitesEle(kitesEle)
+			final Map<String, Kite> importKites = new HashMap<String, Kite>();
+			try {
+				KiteLoader loader = NewObject.newObj(kitesEle.attribute("class").getValue(), KiteLoader.class);
+				for( Kite kite : loader.loadKites()) {
+					importKites.put(kite.toString(), kite);
+				}
+			} catch (PaseClassNameException e) {
+				throw new RuntimeException("can not new kites loader ", e);
+			}
 			kites.putAll(importKites);
 		}
 		Configuration configuration = new Configuration();

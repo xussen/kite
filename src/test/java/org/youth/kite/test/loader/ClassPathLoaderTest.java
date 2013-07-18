@@ -10,11 +10,10 @@ public class ClassPathLoaderTest extends AbstractTest {
 	@Test
 	public void testLoadKites() {
 		ClassPathLoader loader = new ClassPathLoader();
-		loader.setScanPackage("org.youth.kite.test.loader.");
-		for(Kite kite : loader.loadKites()) {
+		for(Kite kite : loader.loadKites("org.junit")) {
 			System.out.println(kite);
 		}
-		assertTrue("loadKites size:" + loader.loadKites().size() + " != 1 ", loader.loadKites().size()==1);
+		assertTrue("loadKites size:" + loader.loadKites("org.junit").size() + " != 1 ", loader.loadKites("org.junit").size()==1);
 		
 	}
 	
