@@ -5,7 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.youth.kite.model.JavaClass;
+import org.youth.kite.model.JavaClass02;
+import org.youth.kite.model.JavaView;
 import org.youth.kite.model.Kite;
+import org.youth.kite.model.Script;
+import org.youth.kite.model.View;
+import org.youth.kite.script.KiteOutPutStreamScript;
 import org.youth.kite.script.KiteScript;
 import static org.youth.kite.util.PackageUtil.*;
 
@@ -22,14 +28,37 @@ public class ClassPathLoader {
 		final List<Kite> kites = new ArrayList<Kite>();
 		try {
 			for(String cn : filterClazzNames(getClassNamesFromPackage(scanPackage))) {
-				Class clazz = Class.forName(cn);
-				KiteScript kiteScript = (KiteScript)clazz.newInstance();
-				JavaClass script = new JavaClass(kiteScript);
-				Kite kite = new Kite(script, null);
-				kites.add(kite);
+				final Kite kite = buildKite(cn);
+				if(kite != null) {
+					kites.add(kite);
+				}
 			}
 		} catch (IOException e) {
 			LOGGER.error("scanPackage has trouble? ", e);
+		}
+		return kites;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private static Kite buildKite(String clazzName) {
+		try {
+			final Kite kite;
+			Class clazz = Class.forName(clazzName);
+			Object scriptObject = clazz.newInstance();
+			if(scriptObject instanceof KiteScript) {
+				KiteScript kiteScript = (KiteScript)scriptObject;
+				Script script = new JavaClass(kiteScript);
+				String viewTemplateClassPath = clazzName.substring(0, clazzName.lastIndexOf(".")); 
+				View view = new JavaView(viewTemplateClassPath);
+				kite = new Kite(script, view);
+			} else if (scriptObject instanceof KiteOutPutStreamScript) {
+				KiteOutPutStreamScript kiteScript = (KiteOutPutStreamScript)scriptObject;
+				JavaClass02 script = new JavaClass02(kiteScript);
+				kite = new Kite(script, null);
+			} else {
+				kite = null;
+			}
+			return kite;
 		} catch (ClassNotFoundException e) {
 			LOGGER.error(e);
 		} catch (InstantiationException e) {
@@ -37,7 +66,7 @@ public class ClassPathLoader {
 		} catch (IllegalAccessException e) {
 			LOGGER.error(e);
 		}
-		return kites;
+		return null;
 	}
 	
 	public static Kite loadKite(String className) {

@@ -7,6 +7,8 @@ package org.youth.kite;
  */
 public interface Response {
 	
-	abstract void response();
+	abstract void response(String msg, String charset);
+
+	abstract void response(byte[] data);
 
 }

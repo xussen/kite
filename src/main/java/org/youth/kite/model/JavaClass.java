@@ -1,13 +1,17 @@
-package org.youth.kite.loader;
+package org.youth.kite.model;
 
 import java.util.Map;
 
+import org.youth.kite.NormalRequest;
+import org.youth.kite.NormalResponse;
 import org.youth.kite.Request;
-import org.youth.kite.Response;
-import org.youth.kite.model.Model;
-import org.youth.kite.model.Script;
 import org.youth.kite.script.KiteScript;
 
+/**
+ * 
+ * @author xusensen
+ * @date 2013-7-28
+ */
 public class JavaClass implements Script {
 	
 	final private KiteScript kiteScript;
@@ -19,7 +23,9 @@ public class JavaClass implements Script {
 
 	public Model executeScript(Map<String, Object> model) {
 		Model model2 = new Model();
-		model2.addAllObject(kiteScript.executeImpl((Request)model.get("request"), (Response)model.get("response")));
+		NormalResponse response = new NormalResponse(System.out);
+		Request request = new NormalRequest(model);
+		model2.addAllObject(kiteScript.executeImpl(request, response));
 		return model2;
 	}
 

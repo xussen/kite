@@ -9,7 +9,6 @@ import org.youth.kite.script.KiteScript;
 public class JavaTestKite implements KiteScript {
 
 	public Map<String, Object> executeImpl(Request request, Response response) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

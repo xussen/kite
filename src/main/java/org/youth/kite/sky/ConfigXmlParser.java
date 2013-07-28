@@ -14,7 +14,7 @@ import org.youth.kite.config.ConfigSource;
 import org.youth.kite.loader.ClassPathLoader;
 import org.youth.kite.loader.KiteLoader;
 import org.youth.kite.model.Kite;
-import org.youth.kite.util.NewObject;
+import static org.youth.kite.util.NewObject.*;
 
 /**
  * 
@@ -44,6 +44,7 @@ public class ConfigXmlParser {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static Configuration parse(Element rootElement) {
 		validateElement(rootElement, ROOT_ELEMENT_NAME);
 		final Element context = rootElement;
@@ -59,7 +60,7 @@ public class ConfigXmlParser {
 		for (Element kitesEle : kitesEles) {
 			final Map<String, Kite> importKites = new HashMap<String, Kite>();
 			try {
-				KiteLoader loader = NewObject.newObj(kitesEle.attribute("class").getValue(), KiteLoader.class);
+				KiteLoader loader = newObj(kitesEle.attribute("class").getValue(), KiteLoader.class);
 				for( Kite kite : loader.loadKites()) {
 					importKites.put(kite.toString(), kite);
 				}

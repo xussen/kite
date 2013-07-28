@@ -1,5 +1,7 @@
 package org.youth.kite;
 
+import java.util.Map;
+
 import org.youth.kite.model.Kite;
 
 /**
@@ -16,8 +18,8 @@ public class Command {
 		this.kite = kite;
 	}
 	
-	public void execute(Request request, Response response) {
-		kite.fly(request, response);
+	public void execute(Map<String, Object> params) {
+		kite.fly(params);
 	}
 
 }

@@ -1,7 +1,7 @@
 package org.youth.kite.model;
 
-import org.youth.kite.Request;
-import org.youth.kite.Response;
+import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * i feel relax with it
@@ -23,11 +23,12 @@ public final class Kite {
 	/**
 	 * 
 	 */
-	public void fly(Request request, Response response) {
+	public void fly(Map<String, Object> params, OutputStream outputStream) {
 		//execute script
-		Model model = script.executeScript(request.params());
+		params.put("outputStream", outputStream);
+		Model model = script.executeScript(params);
 		//render
-		view.render(model, response);
+		view.render(model, outputStream);
 	}
 
 }

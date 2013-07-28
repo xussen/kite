@@ -12,6 +12,8 @@ public interface Request {
 	
 	abstract Map<String, Object> params();
 
+	abstract Object param(String name);
+
 	/**
 	 * client language that can be accepted
 	 * @return

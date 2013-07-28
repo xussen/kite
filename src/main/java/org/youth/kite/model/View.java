@@ -1,6 +1,6 @@
 package org.youth.kite.model;
 
-import org.youth.kite.Response;
+import java.io.OutputStream;
 
 /**
  * 
@@ -9,6 +9,6 @@ import org.youth.kite.Response;
  */
 public interface View {
 	
-	void render(Model model, Response response);
+	void render(Model model, OutputStream outputStream);
 
 }
